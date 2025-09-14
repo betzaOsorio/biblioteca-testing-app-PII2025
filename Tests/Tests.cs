@@ -22,15 +22,18 @@ namespace Tests
         public void PrestarLibro_LibroDisponible_PrestaLibroCorrectamente()
         {
             // Act
+            _biblioteca.PrestarLibro("1984");
 
             // Assert
+            Assert.IsTrue(_libro1.EstaPrestado);
         }
 
         [Test]
         public void PrestarLibro_LibroNoDisponible_LanzaExcepcion()
         {
             // Act
-
+            _biblioteca.PrestarLibro("1984");
+            Assert.Throws<InvalidOperationException>(() => _biblioteca.PrestarLibro("1984"));
             // Assert
         }
 
@@ -38,14 +41,18 @@ namespace Tests
         public void DevolverLibro_LibroPrestado_DevolveLibroCorrectamente()
         {
             // Act
+            _biblioteca.PrestarLibro("1984");
+            _biblioteca.DevolverLibro("1984");
 
             // Assert
+            Assert.IsFalse(_libro1.EstaPrestado);
         }
 
         [Test]
         public void DevolverLibro_LibroNoPrestado_LanzaExcepcion()
         {
             // Act
+            Assert.Throws<InvalidOperationException>(() => _biblioteca.DevolverLibro("1984"));
 
             // Assert
         }
@@ -54,8 +61,14 @@ namespace Tests
         public void ObtenerLibros_RetornaListaDeLibros()
         {
             // Act
+            var libros = _biblioteca.ObtenerLibros();
 
             // Assert
+            Assert.IsNotNull(libros);
+            Assert.IsInstanceOf<List<Libro>>(libros);
+            Assert.AreEqual(2, libros.Count);
+            Assert.Contains(_libro1, libros);
+            Assert.Contains(_libro2, libros);
         }
     }
 }

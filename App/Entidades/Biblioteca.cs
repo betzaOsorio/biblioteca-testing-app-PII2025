@@ -29,6 +29,8 @@ namespace App.Entidades
             libro.Prestar();
         }
 
+
+
         public void DevolverLibro(string titulo)
         {
             var libro = _libros.Find(l => l.Titulo == titulo);
